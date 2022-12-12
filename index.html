@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Homeworked</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style> 
+			html, body {
+        font-family: Courier;
+        font-size: 13px;
+        background-color:#444;
+        color:#DDD;
+        padding: 10px;
+			} 
+      textarea {
+        width: 95%;
+        background-color:black;
+        color:white;
+      }
+			.form-container {
+          padding: 10px;
+          margin: 10px;
+			}
+      button {
+        margin: 10px;
+        background-color:#39FF14;
+        border: none;
+        color:black;
+      }
+      a {
+        color:#39FF14;
+      }
+            h4 {
+        padding-top: 25px;
+      }
+		</style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+  
+  <body>
+    <div class="container">
+      <div class="row">
+          <div class="row">
+  <div class="col-sm-6">
+    <img src="logo2.png", padd alt="Homeworked logo">
+  </div>
+</div>
+      </div>
+      <div class="row clearfix">
+        <div class="col-sm-6">
+        <!-- Here we are adding a large multiline code input box with header and p above -->
+        <h4>Input</h4>
+        <p><small>Enter your homework question:</small></p>
+        <!-- Add an element with the id="prompt" attribute -->
+        <textarea id="prompt" rows="15" cols="50"></textarea>
+        <button onclick="generateText()">Solve</button>
+      </div>
+        
+        <div class="col-sm-6">
+          <!-- Here we are adding a large multiline code input box with header and p above, plus a submit button below -->
+                  <h4> Output </h4>
+        <p><small> Your homework answer:</small></p>
+          <textarea rows="15" cols="50" id="output"></textarea>
+        </div>
+      </div> <!-- Closing div for "row clearfix" div -->
+      <div class="col-12" id="footer" style="height:50px;padding-top:20px;">
+          <div>Made with love by <a href="https://wyniemko.tech/" target="_blank">@bwyniemko</a></div>
+        </div>
+      </div>
+    </div>
+  
+  <script>
+    function generateText() {
+      const prompt = document.getElementById('prompt').value;
+      const key = "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";
+
+      // Use GPT-3 API to generate text
+      const response = fetch('https://api.openai.com/v1/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${key}`
+        },
+        body: JSON.stringify({
+          prompt: prompt,
+          model: "text-davinci-003",
+          max_tokens: 4000,
+          temperature: 0.9
+        })
+      });
+
+      // Display generated text in the "output" paragraph
+      response.then(res => res.json()).then(res => {
+        document.getElementById("output").innerHTML = res.choices[0].text;
+      });
+    }
+    
+  </script>
+
+</body>
+</html>
+
+

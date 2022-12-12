@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fuzzy Compiler by Mini Yohei</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<style> 
+			html, body {
+        margin-top:10px;
+        font-family: Courier;
+        background-color:#444;
+        color:#DDD;
+			} 
+      textarea {
+        width: 100%;
+        background-color:black;
+        color:white;
+      }
+			.form-container {
+          padding: 10px;
+          margin: 10px;
+			}
+      .btn {
+        margin: 10px;
+        background-color:#39FF14;
+        border: none;
+        color:black;
+      }
+      a {
+        color:#39FF14;
+      }
+		</style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        
+      </div>
+      <div class="row clearfix">
+        <div class="col-sm-6">
+          <!-- Here we are adding a large multiline code input box with header and p above -->
+          <h4>Fuzzy Compiler (beta) <small>by Mini Yohei</small></h4>
+          <p><small>Paste code or instructions here..</small></p>
+          <textarea rows="15" cols="50" id="input"></textarea>
+          <button type="submit" class="btn btn-primary" id="submit">Compile</button>
+        </div>
+        <div class="col-sm-6">
+          <!-- Here we are adding a large multiline code input box with header and p above, plus a submit button below -->
+          <p>Output</p>
+          <p><small>May have errors. Not meant for production.</small></p>
+          <textarea rows="15" cols="50" id="output"></textarea>
+          <button class=".btn" id="copy" style="display:none">Copy</button>
+        </div>
+      </div> <!-- Closing div for "row clearfix" div -->
+      <div class="col-12" id="footer" style="height:50px;padding-top:20px;">
+          <div>Made with love by <a href="https://twitter.com/yoheinakajima" target="_blank">@yoheinakajima</a></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function() {
+        $("#submit").click(function(e) {
+          e.preventDefault();
+          var input = $("#input").val();
+          $("#output").html('compiling....');
+
+          $.ajax({
+            url: "/ajax-endpoint",
+            data: {
+              data: input
+            },
+            success: function(result) {
+              //$("#thinking").remove();
+              //result = result.replace(/\n/g, "<br>");
+              //result = result.replace(/\s{4}/g, '</br>');
+              //result = result.replace(/<br>{2,}/g, '<br
+              //result = result.replace(/<\s*br\s*>/g, '</br>');
+              console.log(result);
+              $("#output").text(result);
+              $("#copy").show();
+              
+            },
+            error: function(xhr, status, error) {
+              console.error("An error occurred: " + error);
+              $("#test").html("hi 3");
+            }
+          });
+        });
+
+        $('#copy').click(function() {
+          // Get the text from the textarea
+          var text = $('#output').val();
+
+          // Replace any line break characters
+          text = text.replace(/(?:\r\n|\r|\n)/g, '\r\n');
+      
+          // Copy the text to the user's clipboard
+          var $temp = $("<input>");
+          $("body").append($temp);
+          $temp.val(text).select();
+          document.execCommand("copy");
+          $temp.remove();
+        });
+
+
+        
+      });
+
+    </script>
+  </body>
+</html>
